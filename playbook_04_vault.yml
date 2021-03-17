@@ -3,18 +3,27 @@
   hosts: nodos
   vars_files:
     - vars/vault-vars01.yml
-  
+  vars:
+    usuario: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            30646135323530663131653663653261356535646662383265393936656564326432313262646439
+            6563303564333836356530663466616538376439613430660a613037623263353335383332326634
+            30386330383361656130633936326437323532653339653430636434353439343035656230373830
+            6437636238396466630a373264383036306438323965326363396239626336623931396265333164
+            6661
   tasks:
     - name: "Imprimir por pantalla los datos de alicia"
-      debug:
-
+      debug: 
+        var: "{{ alicia[0] }}"
     
     - name: "Imprimir por pantalla los datos de samuel"
       debug:
+        var: "{{ juan[0] }}"
 
 
     - name: "Imprimir por pantalla una variable interna encriptada con vault"
       debug:
+        var: "{{ usuario }}"
 
     
     - name: "Creacion de un fichero de datos"
@@ -25,4 +34,6 @@
     - name: "Imprimir rutas de los sevidores web"
       lineinfile:
         path: /tmp/datos_vault.txt
+        line: "{{ item }}"
+      loop: "{{ rutas }}"
 

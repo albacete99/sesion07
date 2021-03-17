@@ -1,9 +1,12 @@
 ---
 - name: "Demostracion del uso del ansible-vault"
   hosts: nodos
+  vars_files:
+    - vars/vault-vars02.yml
   tasks:
     - name: "Generate la password del usuario en sha512"
       set_fact:
+        new_hash_pass: "{{ new_user_pass | password_hash ('sha512', new_user_secret) }}"
 
     - name: "Creacion del usuario"
       user:

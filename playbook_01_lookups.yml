@@ -1,10 +1,13 @@
 ---
 - name: "Demostracion de lookups"
   hosts: nodos
+  vars:
+    test_dict: "{{ lookup('file', 'files/dictionary.json', errors='warm') }}"
+    test_content: "{{ lookup('file', 'files/dictionary.json', errors='warm')|from_json|dict2items }}"
   tasks:
     - debug:
         var: test_dict
 
     - debug:
-        var: dict_content
+        var: test_content
   

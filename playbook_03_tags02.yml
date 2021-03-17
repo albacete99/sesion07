@@ -16,6 +16,7 @@
             name: "{{ item }}"
             state: present
           loop: "{{ paquetes }}"
+          tags: apache
 
         - name: "Habilitar el firewall"
           firewalld:
@@ -29,6 +30,7 @@
         - name: "Deshabilitar el selinux"
           selinux:
             state: disabled
+          tags: sel
 
         - name: "Creamos el fichero index"
           file:
@@ -50,7 +52,8 @@
               <h1>Success! The example.com virtual host is working!</h1>
               </body>
               </html>
-        
+          tags: modificacion
+
         - name: "Comprobamos que el servidor ha levando correctamente"
           wait_for:
             host: "{{ inventory_hostname }}"
@@ -61,6 +64,7 @@
       rescue:
         - name: "Reinicio de los nodos"
           reboot:
+          tags: reinicio
           
       always:
         - name: "Iniciamos el servicio httpd (tambien con el arranque del servidor)"
@@ -68,3 +72,4 @@
             name: httpd
             enabled: yes
             state: restarted
+          tags: apache
